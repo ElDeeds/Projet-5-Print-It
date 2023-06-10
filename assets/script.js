@@ -17,26 +17,37 @@ const slides = [
 	}
 ];
 
-
 const bannerImg = document.querySelector('.banner-img');
 const bannerText = document.querySelector('#banner p');
-const arrowLeft = document.querySelector('.arrow_left');
-const arrowRight = document.querySelector('.arrow_right');
-const dots = document.querySelectorAll('.dot');
+const arrows = document.querySelectorAll('.arrow');
+const dotsContainer = document.querySelector('.dots');
 let currentIndex = 0;
 
-arrowRight.addEventListener('click', function() {
-  console.log("clic fleche droite"),
-  navigateSlide(1);
-});
-arrowLeft.addEventListener('click', function() {
-  console.log("clic fleche gauche"),
-  navigateSlide(-1);
-});
+for (let i = 0; i < slides.length; i++) {
+	const dot = document.createElement('div');
+	dot.classList.add('dot');
+	dotsContainer.appendChild(dot);
+}
 
+const dots = document.querySelectorAll('.dot');
 
-function navigateSlide(slideDirection,) {
-  currentIndex += slideDirection;
+updateDots();
+
+for (const arrow of arrows) {
+  arrow.addEventListener("click", (e) => {
+    const clickedArrow = e.target
+    const selectedSide = clickedArrow.dataset.side
+    navigateSlide(selectedSide);
+    updateDots();
+  })
+}
+
+function navigateSlide(slideDirection) {
+  if (slideDirection === "left") {
+    currentIndex--;
+  } else {
+    currentIndex++;
+  }
 
   if (currentIndex < 0) {
     currentIndex = slides.length - 1;
@@ -45,17 +56,18 @@ function navigateSlide(slideDirection,) {
   }
 
   const currentSlide = slides[currentIndex];
-  bannerImg.src = "./assets/images/slideshow/" + currentSlide.image;
+  bannerImg.src = `./assets/images/slideshow/` + currentSlide.image;
   bannerImg.alt = "Slide " + (currentIndex + 1);
   bannerText.innerHTML = currentSlide.tagLine;
+}
 
-  dots.forEach(function(dot, index) {
-    if (index === currentIndex) {
+function updateDots() {
+  for (let i = 0; i < dots.length; i++) {
+    const dot = dots[i];
+    if (i === currentIndex) {
       dot.classList.add('dot_selected');
-      console.log(index),
-      console.log(currentIndex)
     } else {
       dot.classList.remove('dot_selected');
     }
-  });
+  }
 }
