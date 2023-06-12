@@ -42,8 +42,8 @@ for (const arrow of arrows) {
   })
 }
 
-function navigateSlide(slideDirection) {
-  if (slideDirection === "left") {
+function navigateSlide(selectedSide) {
+  if (selectedSide === "left") {
     currentIndex--;
   } else {
     currentIndex++;
